@@ -1,4 +1,5 @@
 import glob
+import os
 import random
 from typing import List
 
@@ -80,7 +81,7 @@ def combine_videos(
             # Only shorten clips if the calculated clip length (req_dur) is shorter than the actual clip to prevent still image
             elif req_dur < clip.duration:
                 clip = clip.subclip(0, req_dur)
-            clip = clip.set_fps(30)
+            clip = clip.with_fps(30)
 
             # Not all videos are same size, so we need to resize them
             clip_w, clip_h = clip.size
@@ -102,15 +103,15 @@ def combine_videos(
 
                     new_width = int(clip_w * scale_factor)
                     new_height = int(clip_h * scale_factor)
-                    clip_resized = clip.resize(newsize=(new_width, new_height))
+                    clip_resized = clip.resize(new_size=(new_width, new_height))
 
                     background = ColorClip(
                         size=(video_width, video_height), color=(0, 0, 0)
                     )
                     clip = CompositeVideoClip(
                         [
-                            background.set_duration(clip.duration),
-                            clip_resized.set_position("center"),
+                            background.with_duration(clip.duration),
+                            clip_resized.with_position("center"),
                         ]
                     )
 
@@ -125,7 +126,7 @@ def combine_videos(
             video_duration += clip.duration
 
     video_clip = concatenate_videoclips(clips)
-    video_clip = video_clip.set_fps(30)
+    video_clip = video_clip.with_fps(30)
     logger.info("writing")
     # https://github.com/harry0703/MoneyPrinterTurbo/issues/111#issuecomment-2032354030
     video_clip.write_videofile(
@@ -223,7 +224,7 @@ def generate_video(
     font_path = ""
     if params.subtitle_enabled:
         if not params.font_name:
-            params.font_name = "STHeitiMedium.ttc"
+            params.font_name = "Sarabun-Regular.ttf"
         font_path = os.path.join(utils.font_dir(), params.font_name)
         if os.name == "nt":
             font_path = font_path.replace("\\", "/")
@@ -236,24 +237,31 @@ def generate_video(
         wrapped_txt, txt_height = wrap_text(
             phrase, max_width=max_width, font=font_path, fontsize=params.font_size
         )
-        _clip = TextClip(
-            wrapped_txt,
-            font=font_path,
-            fontsize=params.font_size,
-            color=params.text_fore_color,
-            bg_color=params.text_background_color,
-            stroke_color=params.stroke_color,
-            stroke_width=params.stroke_width,
-            print_cmd=False,
-        )
+        print(f"wrapped text: {wrapped_txt}")
+        try:
+            _clip = TextClip(
+                wrapped_txt,
+                font=font_path,
+                font_size=params.font_size,
+                color=params.text_fore_color,
+                bg_color=params.text_background_color,
+                stroke_color=params.stroke_color,
+                stroke_width=params.stroke_width,
+                print_cmd=False,
+                method="pango",
+            )
+        except Exception as e:
+            logger.error(f"failed to create text clip: {str(e)}")
+            return None
+        print(f"clip: {_clip}")
         duration = subtitle_item[0][1] - subtitle_item[0][0]
-        _clip = _clip.set_start(subtitle_item[0][0])
-        _clip = _clip.set_end(subtitle_item[0][1])
-        _clip = _clip.set_duration(duration)
+        _clip = _clip.with_start(subtitle_item[0][0])
+        _clip = _clip.with_end(subtitle_item[0][1])
+        _clip = _clip.with_duration(duration)
         if params.subtitle_position == "bottom":
-            _clip = _clip.set_position(("center", video_height * 0.95 - _clip.h))
+            _clip = _clip.with_position(("center", video_height * 0.95 - _clip.h))
         elif params.subtitle_position == "top":
-            _clip = _clip.set_position(("center", video_height * 0.05))
+            _clip = _clip.with_position(("center", video_height * 0.05))
         elif params.subtitle_position == "custom":
             # 确保字幕完全在屏幕内
             margin = 10  # 额外的边距，单位为像素
@@ -261,34 +269,35 @@ def generate_video(
             min_y = margin
             custom_y = (video_height - _clip.h) * (params.custom_position / 100)
             custom_y = max(min_y, min(custom_y, max_y))  # 限制 y 值在有效范围内
-            _clip = _clip.set_position(("center", custom_y))
+            _clip = _clip.with_position(("center", custom_y))
         else:  # center
-            _clip = _clip.set_position(("center", "center"))
+            _clip = _clip.with_position(("center", "center"))
         return _clip
 
     video_clip = VideoFileClip(video_path)
-    audio_clip = AudioFileClip(audio_path).volumex(params.voice_volume)
+    audio_clip = AudioFileClip(audio_path).multiply_volume(params.voice_volume)
 
     if subtitle_path and os.path.exists(subtitle_path):
         sub = SubtitlesClip(subtitles=subtitle_path, encoding="utf-8")
         text_clips = []
         for item in sub.subtitles:
             clip = create_text_clip(subtitle_item=item)
-            text_clips.append(clip)
+            if clip:
+                text_clips.append(clip)
         video_clip = CompositeVideoClip([video_clip, *text_clips])
 
     bgm_file = get_bgm_file(bgm_type=params.bgm_type, bgm_file=params.bgm_file)
     if bgm_file:
         try:
             bgm_clip = (
-                AudioFileClip(bgm_file).volumex(params.bgm_volume).audio_fadeout(3)
+                AudioFileClip(bgm_file).multiply_volume(params.bgm_volume).audio_fadeout(3)
             )
             bgm_clip = afx.audio_loop(bgm_clip, duration=video_clip.duration)
             audio_clip = CompositeAudioClip([audio_clip, bgm_clip])
         except Exception as e:
             logger.error(f"failed to add bgm: {str(e)}")
 
-    video_clip = video_clip.set_audio(audio_clip)
+    video_clip = video_clip.with_audio(audio_clip)
     video_clip.write_videofile(
         output_file,
         audio_codec="aac",
@@ -324,8 +333,8 @@ def preprocess_video(materials: List[MaterialInfo], clip_duration=4):
             # 创建一个图片剪辑，并设置持续时间为3秒钟
             clip = (
                 ImageClip(material.url)
-                .set_duration(clip_duration)
-                .set_position("center")
+                .with_duration(clip_duration)
+                .with_position("center")
             )
             # 使用resize方法来添加缩放效果。这里使用了lambda函数来使得缩放效果随时间变化。
             # 假设我们想要从原始大小逐渐放大到120%的大小。

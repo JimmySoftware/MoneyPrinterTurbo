@@ -1,6 +1,9 @@
 import math
 import os.path
 import re
+import sys
+import uuid
+import argparse
 from os import path
 
 from edge_tts import SubMaker
@@ -212,20 +215,22 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
 
     if type(params.video_concat_mode) is str:
         params.video_concat_mode = VideoConcatMode(params.video_concat_mode)
-        
+       
     # 1. Generate script
-    video_script = generate_script(task_id, params)
-    if not video_script:
-        sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
-        return
-
-    sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=10)
-
-    if stop_at == "script":
-        sm.state.update_task(
-            task_id, state=const.TASK_STATE_COMPLETE, progress=100, script=video_script
-        )
-        return {"script": video_script}
+    #video_script = generate_script(task_id, params)
+    #if not video_script:
+    #    sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
+    #    return
+#
+    #sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=10)
+#
+    #if stop_at == "script":
+    #    sm.state.update_task(
+    #        task_id, state=const.TASK_STATE_COMPLETE, progress=100, script=video_script
+    #    )
+    #    return {"script": video_script}
+    
+    video_script = "แมวเป็นสัตว์เลี้ยง ที่ได้รับความนิยมอย่างมาก ไม่ว่าจะในครอบครัว หรือในชุมชน เพราะพวกมันมีบุคลิก ที่เป็นอิสระ และมีความสามารถ ในการปรับตัว"
 
     # 2. Generate terms
     video_terms = ""
@@ -244,6 +249,7 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
         return {"script": video_script, "terms": video_terms}
 
     sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=20)
+    
 
     # 3. Generate audio
     audio_file, audio_duration, sub_maker = generate_audio(task_id, params, video_script)
@@ -303,16 +309,15 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
     if not final_video_paths:
         sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
         return
-
     logger.success(
         f"task {task_id} finished, generated {len(final_video_paths)} videos."
     )
-
+    
     kwargs = {
         "videos": final_video_paths,
         "combined_videos": combined_video_paths,
-        "script": video_script,
-        "terms": video_terms,
+        #"script": video_script,
+        #"terms": video_terms,
         "audio_file": audio_file,
         "audio_duration": audio_duration,
         "subtitle_path": subtitle_path,
@@ -321,14 +326,25 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
     sm.state.update_task(
         task_id, state=const.TASK_STATE_COMPLETE, progress=100, **kwargs
     )
+    
     return kwargs
 
 
 if __name__ == "__main__":
-    task_id = "task_id"
+    parser = argparse.ArgumentParser(description="Generate video parameters.")
+    parser.add_argument("--topic", type=str, help="The video subject topic.")
+
+    args = parser.parse_args()
+    
+    # Check if topic is provided
+    if not args.topic:
+        print("Error: '--topic' argument is required.")
+        sys.exit(1)  # Exit with a non-zero status to indicate an error
+
+    task_id = uuid.uuid4().hex
     params = VideoParams(
-        video_subject="金钱的作用",
-        voice_name="zh-CN-XiaoyiNeural-Female",
+        video_subject=args.topic,
+        voice_name="th-TH-NiwatNeural-Female",
         voice_rate=1.0,
 
     )

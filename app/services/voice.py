@@ -1284,7 +1284,7 @@ def get_audio_duration(sub_maker: submaker.SubMaker):
 
 
 if __name__ == "__main__":
-    voice_name = "zh-CN-XiaoxiaoMultilingualNeural-V2-Female"
+    voice_name = "th-TH-PremwadeeNeural-Female"
     voice_name = parse_voice_name(voice_name)
     voice_name = is_azure_v2_voice(voice_name)
     print(voice_name)

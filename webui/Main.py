@@ -449,7 +449,7 @@ with left_panel:
 
         selected_index = st.selectbox(
             tr("Script Language"),
-            index=0,
+            index=8,
             options=range(len(video_languages)),  # 使用索引作为内部选项值
             format_func=lambda x: video_languages[x][0],  # 显示给用户的是标签
         )

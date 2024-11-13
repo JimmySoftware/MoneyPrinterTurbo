@@ -186,12 +186,15 @@ def split_string_by_punctuations(s):
             txt += char
             continue
 
-        if char not in const.PUNCTUATIONS:
+        if char not in const.PUNCTUATIONS and char != " " and char != "\n":
             txt += char
         else:
+            if len(txt.strip()) == 0:
+                continue    
             result.append(txt.strip())
             txt = ""
-    result.append(txt.strip())
+    if len(txt.strip()) > 0:
+        result.append(txt.strip())
     # filter empty string
     result = list(filter(None, result))
     return result

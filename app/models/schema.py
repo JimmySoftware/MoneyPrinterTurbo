@@ -120,7 +120,7 @@ class VideoParams(BaseModel):
     subtitle_enabled: Optional[bool] = True
     subtitle_position: Optional[str] = "bottom"  # top, bottom, center
     custom_position: float = 70.0
-    font_name: Optional[str] = "STHeitiMedium.ttc"
+    font_name: Optional[str] = "Sarabun-Regular.ttf"
     text_fore_color: Optional[str] = "#FFFFFF"
     text_background_color: Optional[str] = "transparent"
 
@@ -134,14 +134,14 @@ class VideoParams(BaseModel):
 class SubtitleRequest(BaseModel):
     video_script: str
     video_language: Optional[str] = ""
-    voice_name: Optional[str] = "zh-CN-XiaoxiaoNeural-Female"
+    voice_name: Optional[str] = "th-TH-NiwatNeural-Female"
     voice_volume: Optional[float] = 1.0
     voice_rate: Optional[float] = 1.2
     bgm_type: Optional[str] = "random"
     bgm_file: Optional[str] = ""
     bgm_volume: Optional[float] = 0.2
     subtitle_position: Optional[str] = "bottom"
-    font_name: Optional[str] = "STHeitiMedium.ttc"
+    font_name: Optional[str] = "Sarabun-Regular.ttf"
     text_fore_color: Optional[str] = "#FFFFFF"
     text_background_color: Optional[str] = "transparent"
     font_size: int = 60
