@@ -1,0 +1,22 @@
+# pack-refs with: peeled fully-peeled sorted 
+283099126f35b3c049a3b13d30bb55c0a59a7fb7 refs/remotes/origin/Zulko-patch-progress-bar-varname
+17045fc445ccac0b9bd61ced902bc34bf5c5cef7 refs/remotes/origin/gh-pages
+0f6f6d4d9b96c69d109975549fe6293931f1a19d refs/remotes/origin/master
+1fe7ba5d16a78e7aa242944f76b35b5f89776ef3 refs/remotes/origin/tburrows13-update-ci-imagemagick
+cd3a58aa57ab9c377a1dce5d0b8f0f4d1922ab14 refs/remotes/origin/v1.0.x
+3fef00dbf29629887039af34715ed47b7aa77b64 refs/tags/v0.2.2
+f1fe1f8849f3f19b66d7083642bc271c36941c5b refs/tags/v0.2.2.12
+bed426645428fa390a4484680cf10632b09ec337 refs/tags/v0.2.2.13
+7f7739e82d0d66c1c839f45efdff9bb33c8b13a6 refs/tags/v0.2.3.1
+^89d18ded147d0d713ba6387473c4aeaf41a7620c
+88bab486ec21a25094f3dd6732bed15626d2cc21 refs/tags/v0.2.3.2
+497c85242872791d0d2f9381477f2eaf3e9962cb refs/tags/v0.2.3.3
+a354ba3a887d3a89b9490450dc4fa4e35bd5360a refs/tags/v0.2.3.4
+1b4cb8e8a61616d212dfe5b6250a429e3a9ab335 refs/tags/v0.2.3.5
+5a6dfc4e02582ac17c00bcf9a187298709fb2067 refs/tags/v1.0.0
+^2ad7285bec9dee1a477250891ddc9c418a319dc1
+15ed51cb3ecec7299695fbeae87bb0d67c952a22 refs/tags/v1.0.1
+d54c195d89fb7578e9d01db5149cd8cb29164dba refs/tags/v1.0.2
+db19920764b5cb1d8aa6863019544fd8ae0d3cce refs/tags/v1.0.3
+116f052c2b765c69095d5721f4b22b4e4d5de323 refs/tags/v2.0.0.dev1
+0e4bf6d1c1b448a477c9be49e49c97b104ba1830 refs/tags/v2.0.0.dev2
