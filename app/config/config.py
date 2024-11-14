@@ -52,6 +52,7 @@ ui = _cfg.get("ui", {})
 app['openai_api_key'] = os.getenv('OPENAI_API_KEY', app.get('openai_api_key', ''))
 app['pexels_api_keys'] = [os.getenv('PEXELS_API_KEYS')]
 app['pixabay_api_keys'] = [os.getenv('PIXABAY_API_KEYS')]
+app['material_directory'] = os.getenv('MATERIAL_DIRECTORY')
 
 azure['speech_key'] = os.getenv('AZURE_SPEECH_KEY', azure.get('speech_key', ''))
 azure['speech_region'] = os.getenv('AZURE_SPEECH_REGION', azure.get('speech_region', ''))
