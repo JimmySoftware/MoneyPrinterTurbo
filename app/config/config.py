@@ -34,12 +34,12 @@ def load_config():
 
 
 def save_config():
-    with open(config_file, "w", encoding="utf-8") as f:
+    #with open(config_file, "w", encoding="utf-8") as f:
         #_cfg["app"] = app
         #_cfg["azure"] = azure
         #_cfg["ui"] = ui
         #f.write(toml.dumps(_cfg))
-        pass
+    pass
 
 
 _cfg = load_config()
@@ -50,8 +50,8 @@ azure = _cfg.get("azure", {})
 ui = _cfg.get("ui", {})
 
 app['openai_api_key'] = os.getenv('OPENAI_API_KEY', app.get('openai_api_key', ''))
-app['pexels_api_keys'] = os.getenv('PEXELS_API_KEYS', app.get('pexels_api_keys', ''))
-app['pixabay_api_keys'] = os.getenv('PIXABAY_API_KEYS', app.get('pixabay_api_keys', ''))
+app['pexels_api_keys'] = [os.getenv('PEXELS_API_KEYS')]
+app['pixabay_api_keys'] = [os.getenv('PIXABAY_API_KEYS')]
 
 azure['speech_key'] = os.getenv('AZURE_SPEECH_KEY', azure.get('speech_key', ''))
 azure['speech_region'] = os.getenv('AZURE_SPEECH_REGION', azure.get('speech_region', ''))
