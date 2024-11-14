@@ -52,8 +52,8 @@ RUN pip install -e ./moviepy
 EXPOSE 8501
 
 # Command to run the application
-#CMD ["streamlit", "run", "./webui/Main.py","--browser.serverAddress=127.0.0.1","--server.enableCORS=True","--browser.gatherUsageStats=False"]
-CMD ["tail", "-f", "/dev/null"]
+CMD ["streamlit", "run", "./webui/Main.py","--browser.serverAddress=127.0.0.1","--server.enableCORS=True","--browser.gatherUsageStats=False"]
+#CMD ["tail", "-f", "/dev/null"]
 # 1. Build the Docker image using the following command
 # docker build -t moneyprinterturbo .
 
