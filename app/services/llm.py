@@ -1,6 +1,7 @@
 import logging
 import re
 import json
+from pythainlp import word_tokenize
 from typing import List
 from loguru import logger
 from openai import OpenAI
@@ -319,6 +320,26 @@ Generate a script for a video, depending on the subject of the video.
 
         if i < _max_retries:
             logger.warning(f"failed to generate video script, trying again... {i + 1}")
+            
+    final_script = final_script.replace(" ๆ", "ๆ")
+    lines = final_script.split(" ")
+    vscript = ""
+    for line in lines:
+        if len(line) > 16:
+            tokens = word_tokenize(line, engine='newmm')
+            l = 0
+            for token in tokens:
+                l += 1
+                if l > 5:
+                    if len(tokens) > 9:
+                        vscript += " "
+                        l = 0
+                vscript += token
+            vscript += "\n"
+        else:
+            vscript += line + "\n"
+
+    final_script = vscript            
 
     logger.success(f"completed: \n{final_script}")
     return final_script.strip()

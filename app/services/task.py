@@ -4,6 +4,7 @@ import re
 import sys
 import uuid
 import argparse
+from pythainlp import word_tokenize
 from os import path
 
 from edge_tts import SubMaker
@@ -33,6 +34,7 @@ def generate_script(task_id, params):
         sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
         logger.error("failed to generate video script.")
         return None
+    
 
     return video_script
 
@@ -210,6 +212,7 @@ def generate_final_videos(
 
 
 def start(task_id, params: VideoParams, stop_at: str = "video"):
+    print( "STARTING TASK")
     logger.info(f"start task: {task_id}, stop_at: {stop_at}")
     sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=5)
 
@@ -230,7 +233,27 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
     #    )
     #    return {"script": video_script}
     
-    video_script = "แมวเป็นสัตว์เลี้ยง ที่ได้รับความนิยมอย่างมาก ไม่ว่าจะในครอบครัว หรือในชุมชน เพราะพวกมันมีบุคลิก ที่เป็นอิสระ และมีความสามารถ ในการปรับตัว"
+    video_script = """
+จิตใจมนุษย์เป็นสิ่งที่ซับซ้อน และมหัศจรรย์
+
+ที่ประสบการณ์ และสัญชาตญาณ ส่งผลต่อการตัดสินใจ ในหลายๆเรื่อง
+
+ในใจกำลังเกิดสงคราม ระหว่างระบบคิดสองระบบ
+
+ระบบหนึ่ง เป็นการคิดอย่างรวดเร็ว มีความกระทันหัน และใช้อารมณ์ในการตัดสินใจ
+
+อีกระบบหนึ่งคือ การคิดอย่างช้าๆ ซึ่งเน้นที่การวิเคราะห์, การใช้เหตุผล
+
+และใช้เวลาในการไตร่ตรอง
+
+ความท้าทายคือการหา สมดุลระหว่าง สองระบบเหล่านี้
+
+การรู้ว่าเมื่อไหร่ ควรเชื่อใจในการตัดสินใจ ที่มาอย่างรวดเร็ว
+
+หรือเมื่อใด ควรหันมาคิดประเมิน อย่างถี่ถ้วน
+
+บทเรียนจากความเข้าใจในสองระบบนี้ ช่วยให้เราตระหนัก ถึงวิธีที่เรา สามารถใช้ประโยชน์ จากการคิดอย่างเหมาะสม เพื่อปรับปรุงการตัดสินใจ ในชีวิตประจำวัน
+"""    
 
     # 2. Generate terms
     video_terms = ""
@@ -335,15 +358,18 @@ if __name__ == "__main__":
     parser.add_argument("--topic", type=str, help="The video subject topic.")
 
     args = parser.parse_args()
+    if args:
+        topic = args.topic
     
     # Check if topic is provided
     if not args.topic:
-        print("Error: '--topic' argument is required.")
-        sys.exit(1)  # Exit with a non-zero status to indicate an error
+        topic = "nothing"
+    #    print("Error: '--topic' argument is required.")
+    #    sys.exit(1)  # Exit with a non-zero status to indicate an error
 
     task_id = uuid.uuid4().hex
     params = VideoParams(
-        video_subject=args.topic,
+        video_subject=topic,
         voice_name="th-TH-NiwatNeural-Female",
         voice_rate=1.0,
 
