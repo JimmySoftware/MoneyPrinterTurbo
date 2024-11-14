@@ -3,6 +3,8 @@ import socket
 import toml
 import shutil
 from loguru import logger
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv("./.env"))
 
 root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 config_file = f"{root_dir}/config.toml"
@@ -33,10 +35,11 @@ def load_config():
 
 def save_config():
     with open(config_file, "w", encoding="utf-8") as f:
-        _cfg["app"] = app
-        _cfg["azure"] = azure
-        _cfg["ui"] = ui
-        f.write(toml.dumps(_cfg))
+        #_cfg["app"] = app
+        #_cfg["azure"] = azure
+        #_cfg["ui"] = ui
+        #f.write(toml.dumps(_cfg))
+        pass
 
 
 _cfg = load_config()
@@ -45,6 +48,13 @@ whisper = _cfg.get("whisper", {})
 proxy = _cfg.get("proxy", {})
 azure = _cfg.get("azure", {})
 ui = _cfg.get("ui", {})
+
+app['openai_api_key'] = os.getenv('OPENAI_API_KEY', app.get('openai_api_key', ''))
+app['pexels_api_keys'] = os.getenv('PEXELS_API_KEYS', app.get('pexels_api_keys', ''))
+app['pixabay_api_keys'] = os.getenv('PIXABAY_API_KEYS', app.get('pixabay_api_keys', ''))
+
+azure['speech_key'] = os.getenv('AZURE_SPEECH_KEY', azure.get('speech_key', ''))
+azure['speech_region'] = os.getenv('AZURE_SPEECH_REGION', azure.get('speech_region', ''))
 
 hostname = socket.gethostname()
 
