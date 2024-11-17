@@ -1341,6 +1341,22 @@ class TextClip(ImageClip):
             "%s:%s" % (method, text),
             "-type",
             "truecolormatte",
+        ]
+        
+        if method == "pango" and stroke_width > 0:
+            cmd += [
+                "(", 
+                "-clone", "0",
+                "-alpha", "activate", 
+                "-blur", hex(int(stroke_width+0.5)),
+                "-fill", stroke_color,
+                "-colorize", "100%",
+                ")",
+                "-swap", "0,1",
+                "-composite"
+            ]
+
+        cmd += [
             "PNG32:%s" % tempfilename,
         ]
 

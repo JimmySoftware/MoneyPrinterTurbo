@@ -15,7 +15,7 @@ from app.utils import utils
 
 def get_all_azure_voices(filter_locals=None) -> list[str]:
     if filter_locals is None:
-        filter_locals = ["zh-CN", "en-US", "zh-HK", "zh-TW", "vi-VN"]
+        filter_locals = ["en-US", "th-TH"]
     voices_str = """
 Name: af-ZA-AdriNeural
 Gender: Female
@@ -869,10 +869,13 @@ Gender: Male
 Name: te-IN-ShrutiNeural
 Gender: Female
 
-Name: th-TH-NiwatNeural
+Name: th-TH-NiwatNeural-V2
 Gender: Male
 
-Name: th-TH-PremwadeeNeural
+Name: th-TH-PremwadeeNeural-V2
+Gender: Female
+
+Name: th-TH-AcharaNeural-V2
 Gender: Female
 
 Name: tr-TR-AhmetNeural
@@ -1190,6 +1193,12 @@ def create_subtitle(sub_maker: submaker.SubMaker, text: str, subtitle_file: str)
     1. 将字幕文件按照标点符号分割成多行
     2. 逐行匹配字幕文件中的文本
     3. 生成新的字幕文件
+    
+    ปรับปรุงไฟล์ซับไตเติล
+
+    1. แยกไฟล์ซับไตเติลออกเป็นหลายบรรทัดตามเครื่องหมายวรรคตอน
+    2. จับคู่ข้อความในไฟล์ซับไตเติลแบบทีละบรรทัด
+    3. สร้างไฟล์ซับไตเติลใหม่    
     """
 
     text = _format_text(text)

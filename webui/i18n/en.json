@@ -73,7 +73,7 @@
     "Xiaohongshu": "Xiaohongshu (Xiaohongshu support is coming soon)",
     "Local file": "Local file",
     "Play Voice": "Play Voice",
-    "Voice Example": "This is an example text for testing speech synthesis",
+    "Voice Example": "นี่คือตัวอย่างข้อความสำหรับทดสอบการสังเคราะห์เสียงพูด", 
     "Synthesizing Voice": "Synthesizing voice, please wait...",
     "TTS Provider": "Select the voice synthesis provider",
     "Hide Log": "Hide Log"

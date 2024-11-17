@@ -83,8 +83,10 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                     IMAGEMAGICK_BINARY = "unset"
 
     if IMAGEMAGICK_BINARY in ["unset", "auto-detect"]:
-        if try_cmd(["convert"])[0]:
-            IMAGEMAGICK_BINARY = "convert"
+        if try_cmd(["magick"])[0]:
+            IMAGEMAGICK_BINARY = "magick"
+        elif try_cmd(["convert"])[0]:
+            IMAGEMAGICK_BINARY = "convert"            
         elif not IS_POSIX_OS and try_cmd(["convert.exe"])[0]:  # pragma: no cover
             IMAGEMAGICK_BINARY = "convert.exe"
         else:  # pragma: no cover

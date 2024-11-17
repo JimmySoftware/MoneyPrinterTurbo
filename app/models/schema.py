@@ -134,7 +134,7 @@ class VideoParams(BaseModel):
 class SubtitleRequest(BaseModel):
     video_script: str
     video_language: Optional[str] = ""
-    voice_name: Optional[str] = "th-TH-NiwatNeural-Female"
+    voice_name: Optional[str] = "th-TH-NiwatNeural-Male"
     voice_volume: Optional[float] = 1.0
     voice_rate: Optional[float] = 1.2
     bgm_type: Optional[str] = "random"

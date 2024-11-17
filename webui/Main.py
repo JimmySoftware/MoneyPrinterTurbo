@@ -44,13 +44,13 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 st.title(f"MoneyPrinterTurbo v{config.project_version}")
 
 support_locales = [
-    "zh-CN",
-    "zh-HK",
-    "zh-TW",
-    "de-DE",
+    #"zh-CN",
+    #"zh-HK",
+    #"zh-TW",
+    #"de-DE",
     "en-US",
-    "fr-FR",
-    "vi-VN",
+    #"fr-FR",
+    #"vi-VN",
     "th-TH",
 ]
 
@@ -449,7 +449,7 @@ with left_panel:
 
         selected_index = st.selectbox(
             tr("Script Language"),
-            index=8,
+            index=2,
             options=range(len(video_languages)),  # 使用索引作为内部选项值
             format_func=lambda x: video_languages[x][0],  # 显示给用户的是标签
         )

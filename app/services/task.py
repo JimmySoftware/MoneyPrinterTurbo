@@ -220,41 +220,19 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
         params.video_concat_mode = VideoConcatMode(params.video_concat_mode)
        
     # 1. Generate script
-    #video_script = generate_script(task_id, params)
-    #if not video_script:
-    #    sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
-    #    return
-#
-    #sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=10)
-#
-    #if stop_at == "script":
-    #    sm.state.update_task(
-    #        task_id, state=const.TASK_STATE_COMPLETE, progress=100, script=video_script
-    #    )
-    #    return {"script": video_script}
-    
-    video_script = """
-จิตใจมนุษย์เป็นสิ่งที่ซับซ้อน และมหัศจรรย์
+    video_script = generate_script(task_id, params)
+    if not video_script:
+        sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
+        return
 
-ที่ประสบการณ์ และสัญชาตญาณ ส่งผลต่อการตัดสินใจ ในหลายๆเรื่อง
+    sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=10)
 
-ในใจกำลังเกิดสงคราม ระหว่างระบบคิดสองระบบ
-
-ระบบหนึ่ง เป็นการคิดอย่างรวดเร็ว มีความกระทันหัน และใช้อารมณ์ในการตัดสินใจ
-
-อีกระบบหนึ่งคือ การคิดอย่างช้าๆ ซึ่งเน้นที่การวิเคราะห์, การใช้เหตุผล
-
-และใช้เวลาในการไตร่ตรอง
-
-ความท้าทายคือการหา สมดุลระหว่าง สองระบบเหล่านี้
-
-การรู้ว่าเมื่อไหร่ ควรเชื่อใจในการตัดสินใจ ที่มาอย่างรวดเร็ว
-
-หรือเมื่อใด ควรหันมาคิดประเมิน อย่างถี่ถ้วน
-
-บทเรียนจากความเข้าใจในสองระบบนี้ ช่วยให้เราตระหนัก ถึงวิธีที่เรา สามารถใช้ประโยชน์ จากการคิดอย่างเหมาะสม เพื่อปรับปรุงการตัดสินใจ ในชีวิตประจำวัน
-"""    
-
+    if stop_at == "script":
+        sm.state.update_task(
+            task_id, state=const.TASK_STATE_COMPLETE, progress=100, script=video_script
+        )
+        return {"script": video_script}
+     
     # 2. Generate terms
     video_terms = ""
     if params.video_source != "local":
